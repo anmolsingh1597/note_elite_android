@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.lambton.note_elite_android.database.FoldersDAO;
 import com.lambton.note_elite_android.delegate.BackupRestoreDelegate;
+import com.lambton.note_elite_android.fragment.NoteListFragment;
 import com.lambton.note_elite_android.model.Folder;
 
 import java.util.List;
@@ -31,8 +32,8 @@ public class NotesCardViewActivity extends AppCompatActivity {
     private static final int SAVE_DATABASE_MENU_ID = -3;
     private static final int IMPORT_DATABASE_MENU_ID = -4;
 
-    @BindView(R.id.navigation_view) NavigationView mNavigationView;
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    public @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    public @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     List<Folder> latestFolders;
     BackupRestoreDelegate backupRestoreDelegate;
 
@@ -93,13 +94,13 @@ public class NotesCardViewActivity extends AppCompatActivity {
         menu
                 .add(Menu.NONE, EDIT_FOLDERS_MENU_ID, Menu.NONE, "Create or edit folders")
                 .setIcon(R.drawable.ic_add_white_24dp);
-        SubMenu backupSubMenu = menu.addSubMenu("Backup and restore");
+       /* SubMenu backupSubMenu = menu.addSubMenu("Backup and restore");
         backupSubMenu
                 .add(Menu.NONE, SAVE_DATABASE_MENU_ID, Menu.NONE, "Backup data")
                 .setIcon(R.drawable.ic_save_white_24dp);
         backupSubMenu
                 .add(Menu.NONE, IMPORT_DATABASE_MENU_ID, Menu.NONE, "Restore data")
-                .setIcon(R.drawable.ic_restore_white_24dp);
+                .setIcon(R.drawable.ic_restore_white_24dp);*/
     }
 
     @Override public void onBackPressed(){

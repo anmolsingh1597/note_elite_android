@@ -19,9 +19,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.lambton.note_elite_android.database.AppDatabase;
 
-/**
- * Created by MohMah on 8/17/2016.
- */
 @Table(database = AppDatabase.class, allFields = true)
 public class Note extends BaseModel {
 

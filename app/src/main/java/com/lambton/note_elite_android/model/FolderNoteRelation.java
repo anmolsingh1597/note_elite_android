@@ -9,9 +9,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import com.lambton.note_elite_android.database.AppDatabase;
 
-/**
- * Created by MohMah on 8/17/2016.
- */
 @Table(database = AppDatabase.class, allFields = true)
 public class FolderNoteRelation extends BaseModel {
 	private static final String TAG = "FolderNoteRelation";

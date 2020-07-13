@@ -28,14 +28,14 @@ import com.lambton.note_elite_android.R;
 import com.lambton.note_elite_android.database.AppDatabase;
 
 public class BackupRestoreDelegate {
-	static final int PICK_RESTORE_FILE_REQUEST_CODE = 12;
+	public static final int PICK_RESTORE_FILE_REQUEST_CODE = 12;
 	private Activity activity;
 
 	public BackupRestoreDelegate(Activity activity){
 		this.activity = activity;
 	}
 
-	void backupDataToFile(){
+	public void backupDataToFile(){
 		View view = activity.findViewById(R.id.zero_notes_view);
 		try{
 			File sd = Environment.getExternalStorageDirectory();
