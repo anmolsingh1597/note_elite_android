@@ -3,6 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     buildToolsVersion "30.0.0"
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
+
 
     defaultConfig {
         applicationId "com.lambton.note_elite_android"
@@ -16,11 +21,30 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy.MM.dd-HH.mm')
+    return formattedDate
+}
+
+repositories {
+    google()
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
+    maven {
+        url "http://dl.bintray.com/lukaville/maven"
+    }
+}
+
+def dbflow_version = "4.2.4"
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -29,5 +53,21 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation 'se.emilsjolander:intentbuilder-api:0.14.0'
+    annotationProcessor 'se.emilsjolander:intentbuilder-compiler:0.14.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.github.greenfrvr:hashtag-view:1.2.1'
+    implementation 'com.facebook.stetho:stetho:1.3.1'
+    implementation 'com.commonsware.cwac:richedit:0.5.3'
+    implementation 'com.github.gcacace:signature-pad:1.2.0'
+    implementation 'com.birbit:android-priority-jobqueue:2.0.0'
+    implementation 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
+    implementation 'com.nbsp:library:1.09'
 
 }
