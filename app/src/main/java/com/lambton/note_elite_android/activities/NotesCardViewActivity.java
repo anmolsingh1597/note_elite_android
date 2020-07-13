@@ -91,10 +91,10 @@ public class NotesCardViewActivity extends AppCompatActivity {
                     .setIcon(R.drawable.ic_folder_black_24dp)
                     .setChecked(folder.getId() == checkedItemId);
         }
-        menu
+      /*  menu
                 .add(Menu.NONE, EDIT_FOLDERS_MENU_ID, Menu.NONE, "Create or edit folders")
-                .setIcon(R.drawable.ic_add_white_24dp);
-       /* SubMenu backupSubMenu = menu.addSubMenu("Backup and restore");
+                .setIcon(R.drawable.ic_add_white_24dp);*/
+ /*       SubMenu backupSubMenu = menu.addSubMenu("Backup and restore");
         backupSubMenu
                 .add(Menu.NONE, SAVE_DATABASE_MENU_ID, Menu.NONE, "Backup data")
                 .setIcon(R.drawable.ic_save_white_24dp);
