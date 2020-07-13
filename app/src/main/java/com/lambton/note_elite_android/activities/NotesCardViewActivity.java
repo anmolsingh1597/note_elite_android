@@ -18,16 +18,14 @@ import android.view.SubMenu;
 import android.view.ViewTreeObserver;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.lambton.note_elite_android.R;
+import com.lambton.note_elite_android.database.FoldersDAO;
+import com.lambton.note_elite_android.delegate.BackupRestoreDelegate;
 import com.lambton.note_elite_android.model.Folder;
 
-
-//import ir.cafebazaar.notepad.activities.editfolders.EditFoldersActivityIntentBuilder;
-//import ir.cafebazaar.notepad.database.FoldersDAO;
 import java.util.List;
 
 public class NotesCardViewActivity extends AppCompatActivity {
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = "NotesCardViewActivity";
     private static final int ALL_NOTES_MENU_ID = -1;
     private static final int EDIT_FOLDERS_MENU_ID = -2;
     private static final int SAVE_DATABASE_MENU_ID = -3;
@@ -57,7 +55,7 @@ public class NotesCardViewActivity extends AppCompatActivity {
                 if (menuId == ALL_NOTES_MENU_ID){
                     setFragment(null);
                 }else if (menuId == EDIT_FOLDERS_MENU_ID){
-                    startActivity(new EditFoldersActivityIntentBuilder().build(HomeActivity.this));
+                    startActivity(new EditFoldersActivityIntentBuilder().build(NotesCardViewActivity.this));
                 }else if (menuId == SAVE_DATABASE_MENU_ID){
                     backupRestoreDelegate.backupDataToFile();
                 }else if (menuId == IMPORT_DATABASE_MENU_ID){
