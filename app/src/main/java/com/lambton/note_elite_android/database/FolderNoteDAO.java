@@ -8,14 +8,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ir.cafebazaar.notepad.models.Folder;
-import ir.cafebazaar.notepad.models.FolderNoteRelation;
-import ir.cafebazaar.notepad.models.FolderNoteRelation_Table;
-import ir.cafebazaar.notepad.models.Note;
+import com.lambton.note_elite_android.model.Folder;
+import com.lambton.note_elite_android.model.FolderNoteRelation;
+import com.lambton.note_elite_android.model.FolderNoteRelation_Table;
+import com.lambton.note_elite_android.model.Note;
 
-/**
- * Created by MohMah on 8/20/2016.
- */
 public class FolderNoteDAO{
 	public static List<Folder> getFolders(int noteId){
 		List<FolderNoteRelation> folderNoteRelations = SQLite

@@ -7,12 +7,10 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.Date;
 import java.util.Random;
 
-import ir.cafebazaar.notepad.models.Folder;
-import ir.cafebazaar.notepad.models.Note;
+import com.lambton.note_elite_android.model.Folder;
+import com.lambton.note_elite_android.model.Note;
 
-/**
- * Created by MohMah on 8/17/2016.
- */
+
 @Database(name = AppDatabase.NAME, version = AppDatabase.VERSION)
 public class AppDatabase{
 	public static final String NAME = "AppDatabase";

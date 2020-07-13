@@ -1,17 +1,15 @@
 package com.lambton.note_elite_android.database;
 
 
+import com.lambton.note_elite_android.model.Note_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
-import ir.cafebazaar.notepad.models.Folder;
-import ir.cafebazaar.notepad.models.Note;
-import ir.cafebazaar.notepad.models.Note_Table;
+import com.lambton.note_elite_android.model.Folder;
+import com.lambton.note_elite_android.model.Note;
 
-/**
- * Created by MohMah on 8/21/2016.
- */
+
 public class NotesDAO{
 	public static List<Note> getLatestNotes(Folder folder){
 		if (folder == null)
