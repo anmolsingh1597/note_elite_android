@@ -17,3 +17,5 @@ public class FoldersDAO{
 		return SQLite.select().from(Folder.class).where(Folder_Table.id.is(id)).querySingle();
 	}
 }
+
+//initial commit
