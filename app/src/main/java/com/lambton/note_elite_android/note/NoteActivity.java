@@ -1,7 +1,11 @@
 package com.lambton.note_elite_android.note;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,15 +23,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.greenfrvr.hashtagview.HashtagView;
-import com.raizlabs.android.dbflow.sql.language.Operator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -56,6 +59,7 @@ public class NoteActivity extends AppCompatActivity{
 	private static final String TAG = "NoteActivity";
 
 	private MaterialDialog attachmentDialog;
+	private boolean isRecording = false;
 
 	@Extra @Nullable
 	Integer noteId;
@@ -159,6 +163,29 @@ public class NoteActivity extends AppCompatActivity{
 					.build();
 			attachmentDialog.show();
 
+
+			// Camera
+			android.widget.TextView cameraSelection = layout.findViewById(R.id.camera);
+			cameraSelection.setOnClickListener(new AttachmentOnClickListener());
+
+			// Audio recording
+			android.widget.TextView recordingSelection = layout.findViewById(R.id.recordings);
+			toggleAudioRecordingStop(recordingSelection);
+			recordingSelection.setOnClickListener(new AttachmentOnClickListener());
+
+			// Video recording
+			android.widget.TextView videoSelection = layout.findViewById(R.id.video);
+			videoSelection.setOnClickListener(new AttachmentOnClickListener());
+
+			// Files
+			android.widget.TextView filesSelection = layout.findViewById(R.id.files);
+			filesSelection.setOnClickListener(new AttachmentOnClickListener());
+
+			// Location
+			android.widget.TextView locationSelection = layout.findViewById(R.id.location);
+			locationSelection.setOnClickListener(new AttachmentOnClickListener());
+
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -185,6 +212,73 @@ public class NoteActivity extends AppCompatActivity{
 		if (note.getId() == noteFoldersUpdatedEvent.getNoteId()){
 			bind();
 		}
+	}
+
+	private class AttachmentOnClickListener implements View.OnClickListener {
+
+		@Override
+		public void onClick (View v) {
+
+			switch (v.getId()) {
+				// Photo from camera
+				case R.id.camera:
+					takePhoto();
+					break;
+				case R.id.recordings:
+//					if (!isRecording) {
+//						startRecording(v);
+//					} else {
+//						stopRecording();
+//						Attachment attachment = new Attachment(Uri.fromFile(new File(recordName)), MIME_TYPE_AUDIO);
+//						attachment.setLength(audioRecordingTime);
+//						addAttachment(attachment);
+//						mAttachmentAdapter.notifyDataSetChanged();
+//						mGridView.autoresize();
+//					}
+					break;
+				case R.id.video:
+					takeVideo();
+					break;
+				case R.id.files:
+//					if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ==
+//							PackageManager.PERMISSION_GRANTED) {
+//						startGetContentAction();
+//					} else {
+//						askReadExternalStoragePermission();
+//					}
+					break;
+				case R.id.location:
+//					displayLocationDialog();
+					break;
+				default:
+					break;
+			}
+//			if (!isRecording) {
+//				attachmentDialog.dismiss();
+//			}
+		}
+	}
+
+
+	private void toggleAudioRecordingStop (View v) {
+		if (isRecording) {
+			((android.widget.TextView) v).setText(getString(R.string.stop));
+			((android.widget.TextView) v).setTextColor(Color.parseColor("#ff0000"));
+		}
+	}
+
+	private void takePhoto () {
+
+//		Toast.makeText(this, "Camera click", Toast.LENGTH_SHORT).show();
+
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(intent, 1);
+
+	}
+
+	private void takeVideo(){
+		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+		startActivityForResult(intent, 2);
 	}
 
 	@Override public void onBackPressed(){

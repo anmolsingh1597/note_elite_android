@@ -15,6 +15,8 @@ import java.io.ByteArrayOutputStream;
 
 import com.lambton.note_elite_android.App;
 
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 
 public class Utils{
 	public static float getPixels(int unit, float size){
@@ -58,4 +60,9 @@ public class Utils{
 	public static Bitmap getImage(byte[] image){
 		return BitmapFactory.decodeByteArray(image, 0, image.length);
 	}
+
+	public static void showMessage(int messageId, Style style) {
+		showMessage((messageId), style);
+	}
+
 }
