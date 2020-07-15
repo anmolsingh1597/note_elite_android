@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.greenfrvr.hashtagview.HashtagView;
+import com.raizlabs.android.dbflow.sql.language.Operator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,6 +54,8 @@ import se.emilsjolander.intentbuilder.IntentBuilder;
 @IntentBuilder
 public class NoteActivity extends AppCompatActivity{
 	private static final String TAG = "NoteActivity";
+
+	private MaterialDialog attachmentDialog;
 
 	@Extra @Nullable
 	Integer noteId;
@@ -132,6 +138,7 @@ public class NoteActivity extends AppCompatActivity{
 	@Override public boolean onCreateOptionsMenu(Menu menu){
 		getMenuInflater().inflate(R.menu.note_menu, menu);
 		ViewUtils.tintMenu(menu, R.id.delete_note, R.color.md_blue_grey_400);
+		ViewUtils.tintMenu(menu, R.id.attachments, R.color.md_blue_grey_400);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -140,6 +147,18 @@ public class NoteActivity extends AppCompatActivity{
 			SQLite.delete().from(Note.class).where(Note_Table.id.is(note.getId())).execute();
 			shouldFireDeleteEvent = true;
 			onBackPressed();
+		}
+
+		if (item.getItemId() == R.id.attachments){
+
+			LayoutInflater inflater = this.getLayoutInflater();
+			final View layout = inflater.inflate(R.layout.attachment_dialog, null);
+			attachmentDialog = new MaterialDialog.Builder(this)
+					.autoDismiss(false)
+					.customView(layout, false)
+					.build();
+			attachmentDialog.show();
+
 		}
 		return super.onOptionsItemSelected(item);
 	}

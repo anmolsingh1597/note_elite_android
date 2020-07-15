@@ -69,5 +69,10 @@ dependencies {
     implementation 'com.birbit:android-priority-jobqueue:2.0.0'
     implementation 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
     implementation 'com.nbsp:library:1.09'
+    implementation('com.github.afollestad.material-dialogs:commons:0.9.6.0') {
+        transitive = true
+        exclude group: "com.android.support"
+    }
+
 
 }
