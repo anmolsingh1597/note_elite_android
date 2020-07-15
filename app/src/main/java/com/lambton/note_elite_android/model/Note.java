@@ -1,5 +1,6 @@
 package com.lambton.note_elite_android.model;
 
+import android.graphics.Bitmap;
 import android.text.Spannable;
 import android.text.SpannableString;
 
@@ -29,6 +30,33 @@ public class Note extends BaseModel {
 	private Blob drawing;
 	private Blob drawingTrimmed;
 	private Date createdAt;
+//	private Blob image;
+//	private Blob video;
+//	private String recording;
+
+//	public Blob getImage() {
+//		return image;
+//	}
+//
+//	public void setImage(Blob image) {
+//		this.image = image;
+//	}
+//
+//	public Blob getVideo() {
+//		return video;
+//	}
+//
+//	public void setVideo(Blob video) {
+//		this.video = video;
+//	}
+//
+//	public String getRecording() {
+//		return recording;
+//	}
+//
+//	public void setRecording(String recording) {
+//		this.recording = recording;
+//	}
 
 	public Note(){}
 

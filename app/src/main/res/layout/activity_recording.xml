@@ -3,55 +3,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="15dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="15dp">
+    android:background="@android:color/white"
+    tools:context="com.lambton.note_elite_android.note.RecordingActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="66dp"
-        android:layout_height="54dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/record" />
-
-    <Button
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Record"
-        android:id="@+id/button"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="37dp"
         />
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayoutRecorder"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="STOP"
-        android:id="@+id/button2"
-        android:layout_alignTop="@+id/button"
-        android:layout_centerHorizontal="true"
-        />
+        android:orientation="vertical"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="20dp"
+        >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Play"
-        android:id="@+id/button3"
-        android:layout_alignTop="@+id/button2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        />
+        <Chronometer
+            android:id="@+id/chronometerTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_gravity="center_horizontal"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="STOP PLAYING RECORDING "
-        android:id="@+id/button4"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        />
+        <LinearLayout
+            android:id="@+id/linearLayoutPlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/imageViewPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/play"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:tint="@android:color/darker_gray"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                />
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            >
+
+
+            <ImageView
+                android:id="@+id/imageViewRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/microphone"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_marginEnd="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                />
+
+            <ImageView
+                android:id="@+id/imageViewStop"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/stop"
+                android:tint="@android:color/darker_gray"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

@@ -1,7 +1,11 @@
 package com.lambton.note_elite_android.note;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -28,6 +32,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.lambton.note_elite_android.utils.Fileutils;
+import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.sql.language.Operator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -67,9 +72,10 @@ public class NoteActivity extends AppCompatActivity{
 	private static final String TAG = "NoteActivity";
 
 	private MaterialDialog attachmentDialog;
-	private boolean isRecording = false;
-	private static String fileName = null;
-	private MediaRecorder recorder;
+
+	final private int PICK_IMAGE = 1;
+	final private int CAPTURE_IMAGE = 2;
+	private String imgPath;
 
 	@Extra @Nullable
 	Integer noteId;
@@ -249,9 +255,7 @@ public class NoteActivity extends AppCompatActivity{
 				default:
 					break;
 			}
-			if (!isRecording) {
-				attachmentDialog.dismiss();
-			}
+
 		}
 	}
 
@@ -259,10 +263,88 @@ public class NoteActivity extends AppCompatActivity{
 
 //		Toast.makeText(this, "Camera click", Toast.LENGTH_SHORT).show();
 
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(intent, 1);
+		 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+		startActivityForResult(intent, CAPTURE_IMAGE);
 
 	}
+
+	public Uri setImageUri() {
+		// Store image in dcim
+		File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".png");
+		Uri imgUri = Uri.fromFile(file);
+		this.imgPath = file.getAbsolutePath();
+		return imgUri;
+	}
+
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		if (resultCode != Activity.RESULT_CANCELED) {
+//			String selectedImagePath;
+//			if (requestCode == CAPTURE_IMAGE) {
+//				selectedImagePath = getImagePath();
+//				note = NotesDAO.getNote(noteId);
+//
+//
+//				File imgFile = new  File(selectedImagePath);
+//				if(imgFile.exists())
+//				{
+//					ImageView myImage = new ImageView(this);
+//					myImage.setImageURI(Uri.fromFile(imgFile));
+////					note.setImage(myImage);
+//				}
+//
+//
+//				note.save();
+//			} else {
+//				super.onActivityResult(requestCode, resultCode, data);
+//			}
+//		}
+//
+//	}
+
+	public String getAbsolutePath(Uri uri) {
+		String[] projection = { MediaStore.MediaColumns.DATA };
+		@SuppressWarnings("deprecation")
+		Cursor cursor = managedQuery(uri, projection, null, null, null);
+		if (cursor != null) {
+			int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+			cursor.moveToFirst();
+			return cursor.getString(column_index);
+		} else
+			return null;
+	}
+
+	public Bitmap decodeFile(String path) {
+		try {
+			// Decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(path, o);
+			// The new size we want to scale to
+			final int REQUIRED_SIZE = 70;
+
+			// Find the correct scale value. It should be the power of 2.
+			int scale = 1;
+			while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
+				scale *= 2;
+
+			// Decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeFile(path, o2);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+
+	public String getImagePath() {
+		return imgPath;
+	}
+
 
 	private void takeVideo(){
 		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
