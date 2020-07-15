@@ -1,7 +1,9 @@
 package com.lambton.note_elite_android.note;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +28,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
 import com.lambton.note_elite_android.utils.Fileutils;
+import com.raizlabs.android.dbflow.sql.language.Operator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,7 +36,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -63,6 +68,8 @@ public class NoteActivity extends AppCompatActivity{
 
 	private MaterialDialog attachmentDialog;
 	private boolean isRecording = false;
+	private static String fileName = null;
+	private MediaRecorder recorder;
 
 	@Extra @Nullable
 	Integer noteId;
@@ -173,7 +180,6 @@ public class NoteActivity extends AppCompatActivity{
 
 			// Audio recording
 			android.widget.TextView recordingSelection = layout.findViewById(R.id.recordings);
-			toggleAudioRecordingStop(recordingSelection);
 			recordingSelection.setOnClickListener(new AttachmentOnClickListener());
 
 			// Video recording
@@ -228,16 +234,8 @@ public class NoteActivity extends AppCompatActivity{
 					takePhoto();
 					break;
 				case R.id.recordings:
-//					if (!isRecording) {
-//						startRecording(v);
-//					} else {
-//						stopRecording();
-//						Attachment attachment = new Attachment(Uri.fromFile(new File(recordName)), MIME_TYPE_AUDIO);
-//						attachment.setLength(audioRecordingTime);
-//						addAttachment(attachment);
-//						mAttachmentAdapter.notifyDataSetChanged();
-//						mGridView.autoresize();
-//					}
+					Intent intent = new Intent(NoteActivity.this,RecordingActivity.class);
+					startActivity(intent);
 					break;
 				case R.id.video:
 					takeVideo();
@@ -251,17 +249,9 @@ public class NoteActivity extends AppCompatActivity{
 				default:
 					break;
 			}
-//			if (!isRecording) {
-//				attachmentDialog.dismiss();
-//			}
-		}
-	}
-
-
-	private void toggleAudioRecordingStop (View v) {
-		if (isRecording) {
-			((android.widget.TextView) v).setText(getString(R.string.stop));
-			((android.widget.TextView) v).setTextColor(Color.parseColor("#ff0000"));
+			if (!isRecording) {
+				attachmentDialog.dismiss();
+			}
 		}
 	}
 

@@ -61,8 +61,4 @@ public class Utils{
 		return BitmapFactory.decodeByteArray(image, 0, image.length);
 	}
 
-	public static void showMessage(int messageId, Style style) {
-		showMessage((messageId), style);
-	}
-
 }
