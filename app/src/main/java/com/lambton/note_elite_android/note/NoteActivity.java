@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
+import com.lambton.note_elite_android.utils.Fileutils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -240,12 +243,7 @@ public class NoteActivity extends AppCompatActivity{
 					takeVideo();
 					break;
 				case R.id.files:
-//					if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ==
-//							PackageManager.PERMISSION_GRANTED) {
-//						startGetContentAction();
-//					} else {
-//						askReadExternalStoragePermission();
-//					}
+					showFileChooser();
 					break;
 				case R.id.location:
 //					displayLocationDialog();
@@ -279,6 +277,47 @@ public class NoteActivity extends AppCompatActivity{
 	private void takeVideo(){
 		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 		startActivityForResult(intent, 2);
+	}
+
+	private void showFileChooser() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("*/*");
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+		try {
+			startActivityForResult(
+					Intent.createChooser(intent, "Select a File to Upload"),
+					3);
+		} catch (android.content.ActivityNotFoundException ex) {
+			// Potentially direct the user to the Market with a Dialog
+			Toast.makeText(this, "Please install a File Manager.",
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		switch (requestCode) {
+			case 3:
+				if (resultCode == RESULT_OK) {
+					// Get the Uri of the selected file
+					Uri uri = data.getData();
+					Log.d(TAG, "File Uri: " + uri.toString());
+					// Get the path
+					String path = null;
+					try {
+						path = Fileutils.getPath(this, uri);
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+					}
+					Log.d(TAG, "File Path: " + path);
+					// Get the file instance
+					// File file = new File(path);
+					// Initiate the upload
+				}
+				break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override public void onBackPressed(){
