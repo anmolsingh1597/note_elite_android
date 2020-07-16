@@ -10,6 +10,7 @@ import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.maps.model.LatLng;
 import com.raizlabs.android.dbflow.data.Blob;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,6 +25,7 @@ public class SaveDrawingTask extends Job{
 	private static final String TAG = "SaveDrawingJob";
 	private final SignaturePad signaturePad;
 	private final int noteId;
+
 
 	public SaveDrawingTask(SignaturePad signaturePad, int noteId){
 		super(new Params(1));

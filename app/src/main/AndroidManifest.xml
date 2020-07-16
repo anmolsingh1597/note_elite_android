@@ -3,10 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lambton.note_elite_android">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.STORAGE" />
@@ -24,7 +29,23 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name=".note.RecordingActivity"></activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".note.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
+        <activity android:name=".note.RecordingActivity" />
         <activity
             android:name=".activities.NotesCardViewActivity"
             android:label="@string/app_name">
@@ -47,22 +68,22 @@
         </activity>
         <activity
             android:name=".activities.EditFoldersActivity"
-            android:label="Edit Folders"></activity>
+            android:label="Edit Folders" />
         <activity
             android:name=".note.NoteActivity"
             android:label="Note Activity"
             android:theme="@style/AppTheme.WhiteBackground"
-            android:windowSoftInputMode="adjustResize|stateUnchanged"></activity>
+            android:windowSoftInputMode="adjustResize|stateUnchanged" />
         <activity
             android:name=".activities.DebugActivity"
-            android:label="Debug Activity"></activity>
+            android:label="Debug Activity" />
         <activity
             android:name=".note.DrawingActivity"
             android:label="Drawing Activity"
-            android:theme="@style/AppTheme.WhiteBackground"></activity>
+            android:theme="@style/AppTheme.WhiteBackground" />
         <activity
             android:name=".activities.AddToFoldersActivity"
-            android:label="Edit Folders"></activity>
+            android:label="Edit Folders" />
     </application>
 
 </manifest>

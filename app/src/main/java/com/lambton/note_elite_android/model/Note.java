@@ -6,6 +6,7 @@ import android.text.SpannableString;
 
 import com.commonsware.cwac.richtextutils.SpannableStringGenerator;
 import com.commonsware.cwac.richtextutils.SpannedXhtmlGenerator;
+import com.google.android.gms.maps.model.LatLng;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.data.Blob;
@@ -30,10 +31,18 @@ public class Note extends BaseModel {
 	private Blob drawing;
 	private Blob drawingTrimmed;
 	private Date createdAt;
+//	private LatLng latLng;
 //	private Blob image;
 //	private Blob video;
 //	private String recording;
 
+/*	public LatLng getLatLng() {
+		return latLng;
+	}
+
+	public void setLatLng(LatLng latLng) {
+		this.latLng = latLng;
+	}*/
 //	public Blob getImage() {
 //		return image;
 //	}

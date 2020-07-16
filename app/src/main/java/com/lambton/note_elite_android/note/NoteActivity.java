@@ -7,18 +7,22 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileUtils;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
 import com.greenfrvr.hashtagview.HashtagView;
@@ -42,6 +47,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,6 +82,7 @@ public class NoteActivity extends AppCompatActivity{
 	final private int PICK_IMAGE = 1;
 	final private int CAPTURE_IMAGE = 2;
 	private String imgPath;
+
 
 	@Extra @Nullable
 	Integer noteId;
@@ -250,7 +257,7 @@ public class NoteActivity extends AppCompatActivity{
 					showFileChooser();
 					break;
 				case R.id.location:
-//					displayLocationDialog();
+					displayLocationDialog();
 					break;
 				default:
 					break;
@@ -258,6 +265,15 @@ public class NoteActivity extends AppCompatActivity{
 
 		}
 	}
+
+	private void displayLocationDialog() {
+//startActivity(new Intent(this,MapsActivity.class));
+		Log.d(TAG, "displayLocationDialog: "+ note.getId());
+		MapsActivity.noteIdNumber = note.getId();
+		Intent intent = new MapsActivityIntentBuilder(note.getId()).build(this);
+		startActivity(intent);
+	}
+
 
 	private void takePhoto () {
 
@@ -410,4 +426,5 @@ public class NoteActivity extends AppCompatActivity{
 			EventBus.getDefault().postSticky(new NoteEditedEvent(note.getId()));
 		}
 	}
+
 }
