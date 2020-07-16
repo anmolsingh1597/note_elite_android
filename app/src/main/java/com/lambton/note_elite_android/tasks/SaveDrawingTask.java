@@ -10,7 +10,7 @@ import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.github.gcacace.signaturepad.views.SignaturePad;
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
 import com.raizlabs.android.dbflow.data.Blob;
 
 import org.greenrobot.eventbus.EventBus;
