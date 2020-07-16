@@ -48,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Marker homeMarker;
     private LatLng noteLocation;
+    private boolean notesFlag = false;
 
     static int noteIdNumber;
 
@@ -113,6 +114,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startUpdateLocations();
         }
 
+        int indexOfLatLng;
+        String subStringLocation;
+        String lat;
+        String lng;
+        Note note = NotesDAO.getNote(noteIdNumber);
+        if (note.getBody().contains("Location: ")){
+            indexOfLatLng = note.getBody().indexOf("Location: ");
+            subStringLocation = note.getBody().substring(indexOfLatLng+10);
+            lat = subStringLocation.substring(0,7);
+            lng = subStringLocation.substring(8,16);
+            noteLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+            MarkerOptions options = new MarkerOptions().position(noteLocation)
+                    .draggable(true)
+                    .title("Notes Location")
+                    .snippet("Created over here");
+            mMap.addMarker(options);
+            notesFlag = true;
+            Toast.makeText(this, "Lat: " + lat + " Lng: " + lng, Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -131,7 +151,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
 
         Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        setHomeMarker(lastKnownLocation);
+        if(!notesFlag){
+            setHomeMarker(lastKnownLocation);
+        }
+
     }
 
     private void requestLocationPermission() {

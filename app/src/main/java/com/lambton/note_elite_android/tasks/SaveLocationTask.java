@@ -15,6 +15,8 @@ import com.lambton.note_elite_android.model.Note;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Locale;
+
 public class SaveLocationTask extends Job {
 
     private static final String TAG = "SaveLocationTask";
@@ -36,7 +38,7 @@ public class SaveLocationTask extends Job {
     public void onRun() throws Throwable {
         Log.e(TAG, "onRun() called with: " + "");
         Note note = NotesDAO.getNote(noteId);
-        note.setBody(note.getBody() + "Latitude: "+ String.valueOf(notesLocation.latitude) + "\n Longitude: "+ String.valueOf(notesLocation.longitude));
+        note.setBody(note.getBody() + "Location: "+ String.format(Locale.CANADA, "%.4f", (notesLocation.latitude)) + "," + String.format(Locale.CANADA, "%.4f", (notesLocation.longitude)));
         note.save();
         EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
     }
