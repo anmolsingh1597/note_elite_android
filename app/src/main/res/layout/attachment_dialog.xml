@@ -8,63 +8,6 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-   <TextView
-            android:id="@+id/camera"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/list_selector_background"
-            android:drawableLeft="@drawable/camera"
-            android:drawableStart="@drawable/camera"
-            android:drawablePadding="@dimen/default_item_padding"
-            android:padding="@dimen/default_item_padding"
-            android:paddingStart= "10dp"
-            android:paddingLeft="10dp"
-            android:paddingEnd="10dp"
-            android:paddingRight="10dp"
-            android:text="Camera"
-            android:textSize="20dp"
-            pixlui:typeface="Roboto-Regular.ttf"
-            android:textColor="@color/md_teal_900"
-            tools:ignore="MissingClass"
-            android:layout_width="match_parent" />
-
-    <TextView
-        android:id="@+id/video"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/list_selector_background"
-        android:drawableLeft="@drawable/video"
-        android:drawableStart="@drawable/video"
-        android:drawablePadding="@dimen/default_item_padding"
-        android:padding="@dimen/default_item_padding"
-        android:paddingStart= "10dp"
-        android:paddingLeft="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:text="Video"
-        android:textSize="20dp"
-        pixlui:typeface="Roboto-Regular.ttf"
-        android:textColor="@color/md_teal_900"
-        tools:ignore="MissingClass"
-        android:layout_width="match_parent" />
-
-    <TextView
-        android:id="@+id/files"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/list_selector_background"
-        android:drawableLeft="@drawable/file"
-        android:drawableStart="@drawable/file"
-        android:drawablePadding="@dimen/default_item_padding"
-        android:padding="@dimen/default_item_padding"
-        android:paddingStart= "10dp"
-        android:paddingLeft="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:text="Files"
-        android:textSize="20dp"
-        pixlui:typeface="Roboto-Regular.ttf"
-        android:textColor="@color/md_teal_900"
-        tools:ignore="MissingClass"
-        android:layout_width="match_parent" />
-
     <TextView
         android:id="@+id/recordings"
         android:layout_height="wrap_content"

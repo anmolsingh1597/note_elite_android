@@ -187,21 +187,21 @@ public class NoteActivity extends AppCompatActivity{
 			attachmentDialog.show();
 
 
-			// Camera
-			android.widget.TextView cameraSelection = layout.findViewById(R.id.camera);
-			cameraSelection.setOnClickListener(new AttachmentOnClickListener());
+//			// Camera
+//			android.widget.TextView cameraSelection = layout.findViewById(R.id.camera);
+//			cameraSelection.setOnClickListener(new AttachmentOnClickListener());
 
 			// Audio recording
 			android.widget.TextView recordingSelection = layout.findViewById(R.id.recordings);
 			recordingSelection.setOnClickListener(new AttachmentOnClickListener());
 
-			// Video recording
-			android.widget.TextView videoSelection = layout.findViewById(R.id.video);
-			videoSelection.setOnClickListener(new AttachmentOnClickListener());
+//			// Video recording
+//			android.widget.TextView videoSelection = layout.findViewById(R.id.video);
+//			videoSelection.setOnClickListener(new AttachmentOnClickListener());
 
-			// Files
-			android.widget.TextView filesSelection = layout.findViewById(R.id.files);
-			filesSelection.setOnClickListener(new AttachmentOnClickListener());
+//			// Files
+//			android.widget.TextView filesSelection = layout.findViewById(R.id.files);
+//			filesSelection.setOnClickListener(new AttachmentOnClickListener());
 
 			// Location
 			android.widget.TextView locationSelection = layout.findViewById(R.id.location);
@@ -243,19 +243,19 @@ public class NoteActivity extends AppCompatActivity{
 
 			switch (v.getId()) {
 				// Photo from camera
-				case R.id.camera:
-					takePhoto();
-					break;
+//				case R.id.camera:
+//					takePhoto();
+//					break;
 				case R.id.recordings:
 					Intent intent = new Intent(NoteActivity.this,RecordingActivity.class);
 					startActivity(intent);
 					break;
-				case R.id.video:
-					takeVideo();
-					break;
-				case R.id.files:
-					showFileChooser();
-					break;
+//				case R.id.video:
+//					takeVideo();
+//					break;
+//				case R.id.files:
+//					showFileChooser();
+//					break;
 				case R.id.location:
 					displayLocationDialog();
 					break;
