@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +28,10 @@ import com.lambton.note_elite_android.tasks.SaveDrawingTask;
 import com.lambton.note_elite_android.model.Note;
 import com.lambton.note_elite_android.utils.Utils;
 import com.lambton.note_elite_android.utils.ViewUtils;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
+
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
 @IntentBuilder
@@ -149,7 +155,20 @@ public class DrawingActivity extends AppCompatActivity {
 		}
 		if (requestCode == FILES_REQUEST && resultCode == Activity.RESULT_OK) {
 			Uri uri = data.getData();
-//			uriToBitmap(uri);
+			uriToBitmap(uri);
+		}
+	}
+
+	private void uriToBitmap(Uri selectedFileUri) {
+		try {
+			ParcelFileDescriptor parcelFileDescriptor =
+					getContentResolver().openFileDescriptor(selectedFileUri, "r");
+			FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+			Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+			drawingPad.setSignatureBitmap(image);
+			parcelFileDescriptor.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
