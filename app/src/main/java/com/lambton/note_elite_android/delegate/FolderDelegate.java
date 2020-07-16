@@ -27,11 +27,11 @@ import java.util.regex.Pattern;
 import com.lambton.note_elite_android.R;
 import com.lambton.note_elite_android.database.AppDatabase;
 
-public class BackupRestoreDelegate {
+public class FolderDelegate {
 	public static final int PICK_RESTORE_FILE_REQUEST_CODE = 12;
 	private Activity activity;
 
-	public BackupRestoreDelegate(Activity activity){
+	public FolderDelegate(Activity activity){
 		this.activity = activity;
 	}
 
@@ -121,7 +121,7 @@ public class BackupRestoreDelegate {
 		}
 	}
 
-	private static final String TAG = "BackupRestoreDelegate";
+	private static final String TAG = "FolderDelegate";
 
 	private void showRestoreDialog(String backupFilePath){
 		this.backupFilePath = backupFilePath;

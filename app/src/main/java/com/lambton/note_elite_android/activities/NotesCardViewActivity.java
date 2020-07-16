@@ -19,7 +19,7 @@ import android.view.ViewTreeObserver;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.lambton.note_elite_android.database.FoldersDAO;
-import com.lambton.note_elite_android.delegate.BackupRestoreDelegate;
+import com.lambton.note_elite_android.delegate.FolderDelegate;
 import com.lambton.note_elite_android.fragment.NoteListFragment;
 import com.lambton.note_elite_android.model.Folder;
 
@@ -35,7 +35,7 @@ public class NotesCardViewActivity extends AppCompatActivity {
     public @BindView(R.id.navigation_view) NavigationView mNavigationView;
     public @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     List<Folder> latestFolders;
-    BackupRestoreDelegate backupRestoreDelegate;
+    FolderDelegate folderDelegate;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -47,8 +47,8 @@ public class NotesCardViewActivity extends AppCompatActivity {
                 setFragment(null);
             }
         });
-        backupRestoreDelegate = new BackupRestoreDelegate(this);
-        if (getIntent().getData() != null) backupRestoreDelegate.handleFilePickedWithIntentFilter(getIntent().getData());
+        folderDelegate = new FolderDelegate(this);
+        if (getIntent().getData() != null) folderDelegate.handleFilePickedWithIntentFilter(getIntent().getData());
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override public boolean onNavigationItemSelected(MenuItem item){
                 Log.e(TAG, "onNavigationItemSelected() called with: " + "item id = [" + item.getItemId() + "]");
@@ -58,9 +58,9 @@ public class NotesCardViewActivity extends AppCompatActivity {
                 }else if (menuId == EDIT_FOLDERS_MENU_ID){
                     startActivity(new EditFoldersActivityIntentBuilder().build(NotesCardViewActivity.this));
                 }else if (menuId == SAVE_DATABASE_MENU_ID){
-                    backupRestoreDelegate.backupDataToFile();
+                    folderDelegate.backupDataToFile();
                 }else if (menuId == IMPORT_DATABASE_MENU_ID){
-                    backupRestoreDelegate.startFilePickerIntent();
+                    folderDelegate.startFilePickerIntent();
                 }else{
                     setFragment(FoldersDAO.getFolder(menuId));
                 }
@@ -91,16 +91,7 @@ public class NotesCardViewActivity extends AppCompatActivity {
                     .setIcon(R.drawable.ic_folder_black_24dp)
                     .setChecked(folder.getId() == checkedItemId);
         }
-      /*  menu
-                .add(Menu.NONE, EDIT_FOLDERS_MENU_ID, Menu.NONE, "Create or edit folders")
-                .setIcon(R.drawable.ic_add_white_24dp);*/
- /*       SubMenu backupSubMenu = menu.addSubMenu("Backup and restore");
-        backupSubMenu
-                .add(Menu.NONE, SAVE_DATABASE_MENU_ID, Menu.NONE, "Backup data")
-                .setIcon(R.drawable.ic_save_white_24dp);
-        backupSubMenu
-                .add(Menu.NONE, IMPORT_DATABASE_MENU_ID, Menu.NONE, "Restore data")
-                .setIcon(R.drawable.ic_restore_white_24dp);*/
+
     }
 
     @Override public void onBackPressed(){
@@ -125,8 +116,8 @@ public class NotesCardViewActivity extends AppCompatActivity {
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == BackupRestoreDelegate.PICK_RESTORE_FILE_REQUEST_CODE){
-            backupRestoreDelegate.handleFilePickedWithFilePicker(resultCode, data);
+        if (requestCode == FolderDelegate.PICK_RESTORE_FILE_REQUEST_CODE){
+            folderDelegate.handleFilePickedWithFilePicker(resultCode, data);
         }
     }
 }
