@@ -1,9 +1,7 @@
 package com.lambton.note_elite_android.note;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -14,7 +12,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,16 +29,12 @@ import com.lambton.note_elite_android.database.NotesDAO;
 import com.lambton.note_elite_android.model.Note;
 import com.lambton.note_elite_android.tasks.SaveDrawingTask;
 import com.lambton.note_elite_android.tasks.SaveLocationTask;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import se.emilsjolander.intentbuilder.Extra;
 import se.emilsjolander.intentbuilder.IntentBuilder;
-
 @IntentBuilder
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,  GoogleMap.OnMarkerDragListener {
-
     private static final int REQUEST_CODE = 1;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -49,14 +42,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker homeMarker;
     private LatLng noteLocation;
     private boolean notesFlag = false;
-
+    String subStringLocation;
     static int noteIdNumber;
-
     private static final String TAG = "MapsActivity";
     @Extra
     Integer noteId;
     Note note;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +60,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        Log.e(TAG, "onCreate: noteId= " + noteId + ", note= " + note);
         Toast.makeText(this, String.valueOf(noteIdNumber), Toast.LENGTH_SHORT).show();
     }
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -85,37 +74,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMarkerDragListener(MapsActivity.this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
 //                setHomeMarker(location);
             }
-
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
             }
-
             @Override
             public void onProviderEnabled(String provider) {
-
             }
-
             @Override
             public void onProviderDisabled(String provider) {
-
             }
         };
-
         if (!hasLocationPermission()) {
             requestLocationPermission();
         } else {
             startUpdateLocations();
         }
-
         int indexOfLatLng;
-        String subStringLocation;
         String lat;
         String lng;
         Note note = NotesDAO.getNote(noteIdNumber);
@@ -133,11 +112,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             notesFlag = true;
             Toast.makeText(this, "Lat: " + lat + " Lng: " + lng, Toast.LENGTH_SHORT).show();
         }
-
     }
-
     private void startUpdateLocations() {
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -149,22 +125,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
-
         Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if(!notesFlag){
             setHomeMarker(lastKnownLocation);
         }
-
     }
-
     private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
     }
-
     private boolean hasLocationPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
-
     private void setHomeMarker(Location location) {
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions options = new MarkerOptions().position(userLocation)
@@ -175,42 +146,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         homeMarker = mMap.addMarker(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
         noteLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         if (REQUEST_CODE == requestCode) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             }
         }
     }
-
-
     @Override
     public void onMarkerDragStart(Marker marker) {
-
     }
-
     @Override
     public void onMarkerDrag(Marker marker) {
-
     }
-
     @Override
     public void onMarkerDragEnd(Marker marker) {
-
         if (homeMarker.equals(marker)) {
             noteLocation = marker.getPosition();
             Toast.makeText(this, String.valueOf(noteIdNumber), Toast.LENGTH_SHORT).show();
         }
     }
-
     @Override
     public void onBackPressed() {
-
         App.JOB_MANAGER.addJobInBackground(new SaveLocationTask(noteLocation, noteIdNumber));
         finish();
     }
