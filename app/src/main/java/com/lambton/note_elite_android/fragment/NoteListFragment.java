@@ -4,8 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +26,6 @@ import butterknife.OnClick;
 import com.lambton.note_elite_android.R;
 import com.lambton.note_elite_android.activities.NotesCardViewActivity;
 import com.lambton.note_elite_android.note.NoteActivityIntentBuilder;
-import com.lambton.note_elite_android.adapter.EditFolderRecyclerView;
 import com.lambton.note_elite_android.adapter.HomeAdapter;
 import com.lambton.note_elite_android.model.Folder;
 
@@ -33,7 +37,7 @@ public class NoteListFragment extends Fragment{
 	@BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 	@BindView(R.id.new_note) FloatingActionButton mNewNoteFAB;
 	@BindView(R.id.zero_notes_view) View zeroNotesView;
-	HomeAdapter adapter;
+	HomeAdapter homeAdapter;
 	Folder folder;
 
 	@Nullable @Override public View onCreateView(
@@ -54,12 +58,30 @@ public class NoteListFragment extends Fragment{
 				((NotesCardViewActivity) getActivity()).mDrawerLayout.openDrawer(Gravity.LEFT);
 			}
 		});
+		//------------------------------------------------------//
+		mToolbar.inflateMenu(R.menu.note_card_view_menu);
+		MenuItem searchItem = mToolbar.getMenu().findItem(R.id.btnSearch);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				homeAdapter.getFilter().filter(newText);
+				return false;
+			}
+		});
+		//------------------------------------------------------//
 		StaggeredGridLayoutManager slm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 		slm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 		mRecyclerView.setLayoutManager(slm);
-		adapter = new HomeAdapter(zeroNotesView, folder);
-		mRecyclerView.setAdapter(adapter);
-		adapter.loadFromDatabase();
+		homeAdapter = new HomeAdapter(zeroNotesView, folder);
+		mRecyclerView.setAdapter(homeAdapter);
+		homeAdapter.loadFromDatabase();
 	}
 
 	@OnClick(R.id.new_note) void clickNewNoteButton(){
@@ -69,11 +91,34 @@ public class NoteListFragment extends Fragment{
 
 	@Override public void onStart(){
 		super.onStart();
-		adapter.registerEventBus();
+		homeAdapter.registerEventBus();
 	}
 
 	@Override public void onStop(){
 		super.onStop();
-		adapter.unregisterEventBus();
+		homeAdapter.unregisterEventBus();
 	}
+
+/*
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.note_card_view_menu, menu);
+		MenuItem searchItem = menu.findItem(R.id.btnSearch);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+                homeAdapter.getFilter().filter(newText);
+				return false;
+			}
+		});
+		return true;
+	}*/
 }

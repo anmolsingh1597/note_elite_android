@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 
 import com.lambton.note_elite_android.note.NoteActivityIntentBuilder;
 
@@ -17,6 +18,7 @@ import com.lambton.note_elite_android.model.Note;
 import com.lambton.note_elite_android.utils.SimpleViewHolder;
 import com.lambton.note_elite_android.views.NoteCardView;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,6 +28,7 @@ public class HomeAdapter extends RecyclerView.Adapter{
     private static final String TAG = "Adapter";
     private final Folder folder;
     List<Note> notes;
+    List<Note> notesFull;
     View.OnClickListener noteOnClickListener = new View.OnClickListener(){
         @Override public void onClick(View v){
             if (v instanceof NoteCardView){
@@ -66,6 +69,7 @@ public class HomeAdapter extends RecyclerView.Adapter{
     public void loadFromDatabase(){
         notes = NotesDAO.getLatestNotes(folder);
         notifyDataSetChanged();
+        notesFull = new ArrayList<>(notes);
     }
 
     public void registerEventBus(){
@@ -110,4 +114,33 @@ public class HomeAdapter extends RecyclerView.Adapter{
         }
         EventBus.getDefault().removeStickyEvent(NoteDeletedEvent.class);
     }
+
+    public Filter getFilter() {
+        return notesFilter;
+    }
+    private Filter notesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Note> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(notesFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Note item : notesFull) {
+                    if (item.getTitle().toLowerCase().contains(filterPattern) || item.getBody().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            notes.clear();
+            notes.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
