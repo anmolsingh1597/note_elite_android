@@ -19,6 +19,7 @@ import com.lambton.note_elite_android.utils.SimpleViewHolder;
 import com.lambton.note_elite_android.views.NoteCardView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -143,4 +144,9 @@ public class HomeAdapter extends RecyclerView.Adapter{
             notifyDataSetChanged();
         }
     };
+
+    public  void sortByTitle(){
+        Collections.sort(notes, Note.StuTitleComparator);
+        notifyDataSetChanged();
+    }
 }
