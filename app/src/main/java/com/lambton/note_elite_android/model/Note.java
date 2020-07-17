@@ -15,6 +15,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -158,4 +159,15 @@ public class Note extends BaseModel {
 				", title='" + title + '\'' +
 				"} " + super.toString();
 	}
+
+	/*Comparator for sorting the list by Note title*/
+	public static Comparator<Note> StuTitleComparator = new Comparator<Note>() {
+		public int compare(Note s1, Note s2) {
+			String noteTitle1 = s1.getTitle().toUpperCase();
+			String noteTitle2 = s2.getTitle().toUpperCase();
+			//ascending order
+			return noteTitle1.compareTo(noteTitle2);
+			//descending order
+			//return StudentName2.compareTo(StudentName1);
+		}};
 }
