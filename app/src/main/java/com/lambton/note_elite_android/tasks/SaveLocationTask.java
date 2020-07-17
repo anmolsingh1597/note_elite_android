@@ -1,5 +1,7 @@
 package com.lambton.note_elite_android.tasks;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
@@ -9,6 +11,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.lambton.note_elite_android.actions.NoteEditedEvent;
 import com.lambton.note_elite_android.database.NotesDAO;
 import com.lambton.note_elite_android.model.Note;
+import com.lambton.note_elite_android.note.MapsActivity;
+
 import org.greenrobot.eventbus.EventBus;
 import java.util.Locale;
 
@@ -29,8 +33,12 @@ public class SaveLocationTask extends Job {
     public void onRun() throws Throwable {
         Log.e(TAG, "onRun() called with: " + "");
         Note note = NotesDAO.getNote(noteId);
-//        String noteSubString = note.getBody();
-        note.setBody(note.getBody() + "Location: "+ String.format(Locale.CANADA, "%.4f", (notesLocation.latitude)) + "," + String.format(Locale.CANADA, "%.4f", (notesLocation.longitude)));
+        String noteSubString = note.getBody();
+        if(note.getBody().contains("Location: ")){
+            noteSubString = "";
+            noteSubString  = note.getBody().substring(0,note.getBody().indexOf("Location: "));
+        }
+        note.setBody(noteSubString + " Location: "+ String.format(Locale.CANADA, "%.4f", (notesLocation.latitude)) + "," + String.format(Locale.CANADA, "%.4f", (notesLocation.longitude)));
         note.save();
         EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
     }

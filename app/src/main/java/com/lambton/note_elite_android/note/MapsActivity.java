@@ -56,9 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//        note = NotesDAO.getNote(noteId);
-//        Log.e(TAG, "onCreate: noteId= " + noteId + ", note= " + note);
-        Toast.makeText(this, String.valueOf(noteIdNumber), Toast.LENGTH_SHORT).show();
+
     }
     /**
      * Manipulates the map once available.
@@ -105,12 +103,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lng = subStringLocation.substring(8,16);
             noteLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
             MarkerOptions options = new MarkerOptions().position(noteLocation)
-                    .draggable(true)
                     .title("Notes Location")
                     .snippet("Created over here");
             mMap.addMarker(options);
             notesFlag = true;
-            Toast.makeText(this, "Lat: " + lat + " Lng: " + lng, Toast.LENGTH_SHORT).show();
         }
     }
     private void startUpdateLocations() {
@@ -165,7 +161,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMarkerDragEnd(Marker marker) {
         if (homeMarker.equals(marker)) {
             noteLocation = marker.getPosition();
-            Toast.makeText(this, String.valueOf(noteIdNumber), Toast.LENGTH_SHORT).show();
         }
     }
     @Override
