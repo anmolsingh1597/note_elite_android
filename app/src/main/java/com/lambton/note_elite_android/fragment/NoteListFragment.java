@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -58,6 +59,8 @@ public class NoteListFragment extends Fragment{
 				((NotesCardViewActivity) getActivity()).mDrawerLayout.openDrawer(Gravity.LEFT);
 			}
 		});
+
+		//Search
 		//------------------------------------------------------//
 		mToolbar.inflateMenu(R.menu.note_card_view_menu);
 		MenuItem searchItem = mToolbar.getMenu().findItem(R.id.btnSearch);
@@ -72,6 +75,18 @@ public class NoteListFragment extends Fragment{
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				homeAdapter.getFilter().filter(newText);
+				return false;
+			}
+		});
+
+		//Sort
+		//------------------------------------------------------//
+		MenuItem sortItem = mToolbar.getMenu().findItem(R.id.btnSort);
+		sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Toast.makeText(((NotesCardViewActivity) getActivity()), "Sort", Toast.LENGTH_SHORT).show();
+//				homeAdapter.sortByLetters();
 				return false;
 			}
 		});

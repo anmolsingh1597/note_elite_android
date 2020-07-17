@@ -7,4 +7,9 @@
         android:title="Search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView"/>
+    <item
+        android:id="@+id/btnSort"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:title="Sort"
+        app:showAsAction="always"/>
 </menu>
