@@ -85,8 +85,9 @@ public class NoteListFragment extends Fragment{
 		sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				Toast.makeText(((NotesCardViewActivity) getActivity()), "Sort", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(((NotesCardViewActivity) getActivity()), "Sort", Toast.LENGTH_SHORT).show();
 //				homeAdapter.sortByLetters();
+				homeAdapter.sortByTitle();
 				return false;
 			}
 		});
