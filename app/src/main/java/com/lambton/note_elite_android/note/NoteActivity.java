@@ -247,6 +247,7 @@ public class NoteActivity extends AppCompatActivity{
 //					takePhoto();
 //					break;
 				case R.id.recordings:
+					RecordingActivity.noteId = note.getId();
 					Intent intent = new Intent(NoteActivity.this,RecordingActivity.class);
 					startActivity(intent);
 					break;

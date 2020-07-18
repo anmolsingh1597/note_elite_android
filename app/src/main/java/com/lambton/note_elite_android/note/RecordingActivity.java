@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -16,19 +17,31 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lambton.note_elite_android.R;
+import com.lambton.note_elite_android.database.AudioDao;
+import com.lambton.note_elite_android.model.AudioFile;
+import com.lambton.note_elite_android.model.Note;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class RecordingActivity extends AppCompatActivity {
 
-    Button btnPlay, btnStop, btnRecord, btnStopRecord;
+    static int noteId;
+    AudioFile audioFile;
+    Button btnPlay, btnStop, btnRecord, btnStopRecord, btnSave;
     String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
@@ -43,19 +56,28 @@ public class RecordingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recording);
 
+        if(noteId != 0){
+            List<AudioFile> audioFileList = new ArrayList<>();
+            audioFileList = AudioDao.getLatestAudioFiles(noteId);
+            if(!audioFileList.equals(null)){
+            pathSave = audioFileList.get(0).getFilePath();
+            }
+        }
+
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         // set the volume of played media to maximum.
-        audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);
-
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+//       RecordingActivityIntentBuilder.inject(getIntent(), this);
         btnPlay = findViewById(R.id.btn_play);
         btnRecord = findViewById(R.id.btn_record);
         btnStop = findViewById(R.id.btn_stop);
         btnStopRecord = findViewById(R.id.btn_stop_record);
+        btnSave = findViewById(R.id.btn_save);
+
 
         // check the permission
         if (!checkPermissionDevice())
             requestPermission();
-
 
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +176,49 @@ public class RecordingActivity extends AppCompatActivity {
             }
         });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecordingActivity.this);
+                LayoutInflater layoutInflater = LayoutInflater.from(RecordingActivity.this);
+                View view = layoutInflater.inflate(R.layout.alert_dialog_save, null);
+                builder.setView(view);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                final EditText etFileName = view.findViewById(R.id.et_file_name);
+                view.findViewById(R.id.btn_save_file).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String fileName = etFileName.getText().toString().trim();
+                        if (fileName.isEmpty()) {
+                            etFileName.setError("Name field cannot be empty");
+                            etFileName.requestFocus();
+                            return;
+                        }
+                        bind(fileName);
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    private void bind(String fileName) {
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String date = simpleDateFormat.format(cal.getTime());
+
+        audioFile = new AudioFile();
+
+        audioFile.setDate(date);
+        audioFile.setNoteId(noteId);
+        audioFile.setFilePath(pathSave);
+        Toast.makeText(this, fileName + ", " + noteId + ", " + pathSave + ", " + date, Toast.LENGTH_SHORT).show();
+        audioFile.save();
 
     }
 
@@ -327,8 +392,10 @@ public class RecordingActivity extends AppCompatActivity implements View.OnClick
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         */
-/**In the lines below, we create a directory VoiceRecorderSimplifiedCoding/Audios in the phone storage
-         * and the audios are being stored in the Audios folder **//*
+/**
+ * In the lines below, we create a directory VoiceRecorderSimplifiedCoding/Audios in the phone storage
+ * and the audios are being stored in the Audios folder  once the audio is complete, timer is stopped here moving the track as per the seekBar's position
+ **//*
 
         File root = android.os.Environment.getExternalStorageDirectory();
         File file = new File(root.getAbsolutePath() + "/VoiceRecorderSimplifiedCoding/Audios");
