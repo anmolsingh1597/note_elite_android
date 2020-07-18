@@ -248,7 +248,8 @@ public class NoteActivity extends AppCompatActivity{
 //					break;
 				case R.id.recordings:
 					RecordingActivity.noteId = note.getId();
-					Intent intent = new Intent(NoteActivity.this,RecordingActivity.class);
+					RecordingListActivity.noteId = note.getId();
+					Intent intent = new Intent(NoteActivity.this,RecordingListActivity.class);
 					startActivity(intent);
 					break;
 //				case R.id.video:
