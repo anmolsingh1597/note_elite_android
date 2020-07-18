@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/btn_file_menu"
-        android:icon="@drawable/ic_add_white_24dp"
+        android:icon="@android:drawable/ic_menu_gallery"
         android:title="Item"
         app:showAsAction="always" />
     <item
