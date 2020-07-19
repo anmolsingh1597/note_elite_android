@@ -92,14 +92,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         locationDataFilesList = LocationDataFileDao.getLatestLocation(noteIdNumber);
-        Log.d(TAG, "onMapReady: "+ noteId);
 
         if (locationDataFilesList.size() != 0){
 
             MarkerOptions options = new MarkerOptions().position(new LatLng(locationDataFilesList.get(0).getLatitude(),locationDataFilesList.get(0).getLongitude()))
-                    .title("Notes Location Data File")
+                    .title("This Note")
                     .snippet("Created over here");
             mMap.addMarker(options);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationDataFilesList.get(0).getLatitude(),locationDataFilesList.get(0).getLongitude()),15));
         }
     }
     private void startUpdateLocations() {
@@ -153,15 +153,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        /*if (homeMarker.equals(marker)) {
-            noteLocation = marker.getPosition();
-        }*/
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-         /*    App.JOB_MANAGER.addJobInBackground(new SaveLocationTask(noteLocation, noteIdNumber));
-        finish();*/
+
     }
 }
