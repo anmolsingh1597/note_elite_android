@@ -29,7 +29,8 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name=".note.RecordingListActivity"></activity>
+        <activity android:name=".activities.SplashActivity"></activity>
+        <activity android:name=".note.RecordingListActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
