@@ -2,12 +2,16 @@ package com.lambton.note_elite_android.note;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,11 +35,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.commonsware.cwac.richedit.RichEditText;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.greenfrvr.hashtagview.HashtagView;
+import com.lambton.note_elite_android.model.AudioFile;
+import com.lambton.note_elite_android.model.LocationDataFile;
 import com.lambton.note_elite_android.utils.Fileutils;
 import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.sql.language.Operator;
@@ -49,6 +59,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -83,6 +94,15 @@ public class NoteActivity extends AppCompatActivity{
 	final private int CAPTURE_IMAGE = 2;
 	private String imgPath;
 
+
+	//location with location manager and listner
+	LocationManager locationManager;
+	LocationListener locationListener;
+	private FusedLocationProviderClient mClient;
+	private static final int REQUEST_CODE = 1;
+	double lat;
+	double lng;
+	LocationDataFile locationDataFile;
 
 	@Extra @Nullable
 	Integer noteId;
@@ -128,7 +148,10 @@ public class NoteActivity extends AppCompatActivity{
 				Toast.makeText(NoteActivity.this, "Folder Clicked", Toast.LENGTH_SHORT).show();
 			}
 		});
+		
+		liveLocation();
 	}
+
 
 	private void bind(){
 		note = NotesDAO.getNote(noteId);
@@ -203,7 +226,7 @@ public class NoteActivity extends AppCompatActivity{
 //			android.widget.TextView filesSelection = layout.findViewById(R.id.files);
 //			filesSelection.setOnClickListener(new AttachmentOnClickListener());
 
-			// Location
+			// LocationDataFile
 			android.widget.TextView locationSelection = layout.findViewById(R.id.location);
 			locationSelection.setOnClickListener(new AttachmentOnClickListener());
 
@@ -410,6 +433,71 @@ public class NoteActivity extends AppCompatActivity{
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+
+	private void liveLocation() {
+		mClient = LocationServices.getFusedLocationProviderClient(this);
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+		locationListener = new LocationListener() {
+			@Override
+			public void onLocationChanged(Location location) {
+
+				Log.d(TAG, "onLocationChanged: " +location.getLatitude()+"|||"+ location.getLongitude());
+				lat = location.getLatitude();
+				lng = location.getLongitude();
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+
+			}
+		};
+
+		if (!hasLocationPermission()) {
+			requestLocationPermission();
+		} else {
+			startUpdateLocations();
+		}
+	}
+
+	//MARK: start update location
+	private void startUpdateLocations() {
+
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			// TODO: Consider calling
+			//    ActivityCompat#requestPermissions
+			// here to request the missing permissions, and then overriding
+			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+			//                                          int[] grantResults)
+			// to handle the case where the user grants the permission. See the documentation
+			// for ActivityCompat#requestPermissions for more details.
+			return;
+		}
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+
+		Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//		Toast.makeText(NoteActivity.this, lastKnownLocation.getLatitude()+"|||"+ lastKnownLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+//		userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+//		setHomeMarker(lastKnownLocation);
+	}
+
+	private void requestLocationPermission() {
+		ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+	}
+
+	private boolean hasLocationPermission() {
+		return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+	}
 	@Override public void onBackPressed(){
 		super.onBackPressed();
 		assert note != null;
@@ -426,7 +514,25 @@ public class NoteActivity extends AppCompatActivity{
 			note.setTitle(processedTitle);
 			note.save();
 			EventBus.getDefault().postSticky(new NoteEditedEvent(note.getId()));
+			saveLocation(note.getId());
 		}
+	}
+
+	private void saveLocation(int id){
+
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		String date = simpleDateFormat.format(cal.getTime());
+
+		locationDataFile = new LocationDataFile();
+
+		locationDataFile.setNoteId(id);
+		locationDataFile.setDate(date);
+		locationDataFile.setLatitude(lat);
+		locationDataFile.setLongitude(lng);
+
+		locationDataFile.save();
+
 	}
 
 }

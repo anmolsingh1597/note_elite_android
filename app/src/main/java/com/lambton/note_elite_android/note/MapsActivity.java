@@ -5,13 +5,12 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,15 +19,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.lambton.note_elite_android.App;
 import com.lambton.note_elite_android.R;
-import com.lambton.note_elite_android.database.NotesDAO;
+import com.lambton.note_elite_android.database.LocationDataFileDao;
+import com.lambton.note_elite_android.model.LocationDataFile;
 import com.lambton.note_elite_android.model.Note;
-import com.lambton.note_elite_android.tasks.SaveDrawingTask;
-import com.lambton.note_elite_android.tasks.SaveLocationTask;
+
 import java.util.ArrayList;
 import java.util.List;
 import se.emilsjolander.intentbuilder.Extra;
@@ -48,6 +43,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Extra
     Integer noteId;
     Note note;
+
+    List<LocationDataFile> locationDataFilesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        locationDataFilesList = new ArrayList<>();
 
     }
     /**
@@ -92,21 +90,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             startUpdateLocations();
         }
-        int indexOfLatLng;
-        String lat;
-        String lng;
-        Note note = NotesDAO.getNote(noteIdNumber);
-        if (note.getBody().contains("Location: ")){
-            indexOfLatLng = note.getBody().indexOf("Location: ");
-            subStringLocation = note.getBody().substring(indexOfLatLng+10);
-            lat = subStringLocation.substring(0,7);
-            lng = subStringLocation.substring(8,16);
-            noteLocation = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-            MarkerOptions options = new MarkerOptions().position(noteLocation)
-                    .title("Notes Location")
+
+        locationDataFilesList = LocationDataFileDao.getLatestLocation(noteIdNumber);
+        Log.d(TAG, "onMapReady: "+ noteId);
+
+        if (locationDataFilesList.size() != 0){
+
+            MarkerOptions options = new MarkerOptions().position(new LatLng(locationDataFilesList.get(0).getLatitude(),locationDataFilesList.get(0).getLongitude()))
+                    .title("Notes Location Data File")
                     .snippet("Created over here");
             mMap.addMarker(options);
-            notesFlag = true;
         }
     }
     private void startUpdateLocations() {
@@ -133,15 +126,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
     private void setHomeMarker(Location location) {
-        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions options = new MarkerOptions().position(userLocation)
-                .title("You are here")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .snippet("Your Location")
-                .draggable(true);
-        homeMarker = mMap.addMarker(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-        noteLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        if(location != null) {
+            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            MarkerOptions options = new MarkerOptions().position(userLocation)
+                    .title("You are here")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .snippet("Your Location Data File");
+            homeMarker = mMap.addMarker(options);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            noteLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -159,13 +153,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        if (homeMarker.equals(marker)) {
+        /*if (homeMarker.equals(marker)) {
             noteLocation = marker.getPosition();
-        }
+        }*/
     }
+
     @Override
     public void onBackPressed() {
-        App.JOB_MANAGER.addJobInBackground(new SaveLocationTask(noteLocation, noteIdNumber));
-        finish();
+        super.onBackPressed();
+         /*    App.JOB_MANAGER.addJobInBackground(new SaveLocationTask(noteLocation, noteIdNumber));
+        finish();*/
     }
 }

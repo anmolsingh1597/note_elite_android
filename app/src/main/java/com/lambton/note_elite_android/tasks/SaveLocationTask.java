@@ -34,11 +34,11 @@ public class SaveLocationTask extends Job {
         Log.e(TAG, "onRun() called with: " + "");
         Note note = NotesDAO.getNote(noteId);
         String noteSubString = note.getBody();
-        if(note.getBody().contains("Location: ")){
+        if(note.getBody().contains("LocationDataFile: ")){
             noteSubString = "";
-            noteSubString  = note.getBody().substring(0,note.getBody().indexOf("Location: "));
+            noteSubString  = note.getBody().substring(0,note.getBody().indexOf("LocationDataFile: "));
         }
-        note.setBody(noteSubString + " Location: "+ String.format(Locale.CANADA, "%.4f", (notesLocation.latitude)) + "," + String.format(Locale.CANADA, "%.4f", (notesLocation.longitude)));
+        note.setBody(noteSubString + " LocationDataFile: "+ String.format(Locale.CANADA, "%.4f", (notesLocation.latitude)) + "," + String.format(Locale.CANADA, "%.4f", (notesLocation.longitude)));
         note.save();
         EventBus.getDefault().post(new NoteEditedEvent(note.getId()));
     }
