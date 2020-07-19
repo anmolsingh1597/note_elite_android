@@ -49,20 +49,21 @@ public class RecordingActivity extends AppCompatActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    final private static String RECORDED_FILE = "/audio.3gp";
+    private static String RECORDED_FILE;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recording);
 
-        if(noteId != 0){
+       /* if(noteId != 0){
             List<AudioFile> audioFileList = new ArrayList<>();
             audioFileList = AudioDao.getLatestAudioFiles(noteId);
             if(!audioFileList.equals(null)){
             pathSave = audioFileList.get(0).getFilePath();
             }
-        }
+        }*/
 
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         // set the volume of played media to maximum.
@@ -80,6 +81,8 @@ public class RecordingActivity extends AppCompatActivity {
             requestPermission();
 
 
+
+
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +91,9 @@ public class RecordingActivity extends AppCompatActivity {
 //                            + "/recording.3gp";
 //                    pathSave = getExternalFilesDir(null).getAbsolutePath()
 //                            + RECORDED_FILE;
+                    Calendar cal = Calendar.getInstance();
+
+                    RECORDED_FILE =  "/"+String.valueOf(cal.getTimeInMillis())+noteId+"audio.3gp";
                     pathSave = getExternalCacheDir().getAbsolutePath()
                             + RECORDED_FILE;
 
@@ -198,6 +204,7 @@ public class RecordingActivity extends AppCompatActivity {
                         }
                         bind(fileName);
                         alertDialog.dismiss();
+                        finish();
                     }
                 });
             }
@@ -214,10 +221,11 @@ public class RecordingActivity extends AppCompatActivity {
 
         audioFile = new AudioFile();
 
+        audioFile.setFileName(fileName);
         audioFile.setDate(date);
         audioFile.setNoteId(noteId);
         audioFile.setFilePath(pathSave);
-        Toast.makeText(this, fileName + ", " + noteId + ", " + pathSave + ", " + date, Toast.LENGTH_SHORT).show();
+
         audioFile.save();
 
     }

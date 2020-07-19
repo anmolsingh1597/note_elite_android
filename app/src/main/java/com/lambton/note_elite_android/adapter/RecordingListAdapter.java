@@ -73,8 +73,6 @@ public class RecordingListAdapter extends RecyclerView.Adapter<RecordingListAdap
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(context, audioFile.getFileName(), Toast.LENGTH_SHORT).show();
-
                 mediaPlayer = new MediaPlayer();
                 try {
                     mediaPlayer.setDataSource(audioFile.getFilePath());

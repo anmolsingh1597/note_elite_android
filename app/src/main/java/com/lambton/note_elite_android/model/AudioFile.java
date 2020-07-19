@@ -8,9 +8,11 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = AppDatabase.class, allFields = true)
 public class AudioFile extends BaseModel {
 
-    @PrimaryKey
+
     private String fileName;
     private int NoteId;
+
+    @PrimaryKey
     private String filePath;
     private String date;
     public AudioFile() {
