@@ -112,16 +112,13 @@ public class RecordingListActivity extends AppCompatActivity {
 
                 //the selected audio.
                 Uri uri = data.getData();
-
-                String fullPath = Environment.getExternalStorageDirectory() + uri.getPath().replace(":14","")+".3gp";
-                Toast.makeText(this,  fullPath+", "+ uri.getPath(), Toast.LENGTH_SHORT).show();
-                bind(fullPath);
+                bind(uri.getPath(), uri);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void bind(String pathSave) {
+    private void bind(String pathSave, Uri uri) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String date = simpleDateFormat.format(cal.getTime());
