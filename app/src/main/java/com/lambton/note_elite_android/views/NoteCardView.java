@@ -60,27 +60,30 @@ public class NoteCardView extends CardView{
 	}
 
 	public void bindModel(Note note){
-		boolean isTitleEmpty = TextUtils.isEmpty(note.getTitle());
-		boolean isBodyEmpty = TextUtils.isEmpty(note.getSpannedBody());
-		title.setText(note.getTitle());
-		body.setText(note.getSpannedBody());
-		title.setVisibility(isTitleEmpty ? GONE : VISIBLE);
-		body.setVisibility(isBodyEmpty ? GONE : VISIBLE);
+if(note != null) {
+	boolean isTitleEmpty = TextUtils.isEmpty(note.getTitle());
+	boolean isBodyEmpty = TextUtils.isEmpty(note.getSpannedBody());
+	title.setText(note.getTitle());
+	body.setText(note.getSpannedBody());
+	title.setVisibility(isTitleEmpty ? GONE : VISIBLE);
+	body.setVisibility(isBodyEmpty ? GONE : VISIBLE);
 
-		List<Folder> folders = FolderNoteDAO.getFolders(note.getId());
-		HashtagView.DataTransform<Folder> dt = new HashtagView.DataTransform<Folder>(){
-			@Override public CharSequence prepare(Folder item){
-				return item.getName();
-			}
-		};
-		foldersTagView.setData(folders, dt);
-		if (note.getDrawingTrimmed() == null)
-			drawingImage.setVisibility(View.GONE);
-		else{
-			drawingImage.setVisibility(View.VISIBLE);
-			Bitmap imageBitMap = Utils.getImage(note.getDrawingTrimmed().getBlob());
-			drawingImage.setImageBitmap(imageBitMap);
+	List<Folder> folders = FolderNoteDAO.getFolders(note.getId());
+	HashtagView.DataTransform<Folder> dt = new HashtagView.DataTransform<Folder>() {
+		@Override
+		public CharSequence prepare(Folder item) {
+			return item.getName();
 		}
-		this.note = note;
+	};
+	foldersTagView.setData(folders, dt);
+	if (note.getDrawingTrimmed() == null)
+		drawingImage.setVisibility(View.GONE);
+	else {
+		drawingImage.setVisibility(View.VISIBLE);
+		Bitmap imageBitMap = Utils.getImage(note.getDrawingTrimmed().getBlob());
+		drawingImage.setImageBitmap(imageBitMap);
+	}
+	this.note = note;
+}
 	}
 }
