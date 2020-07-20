@@ -118,7 +118,6 @@ public class RecordingActivity extends AppCompatActivity {
                     btnStopRecord.setEnabled(true);
                     btnRecord.setVisibility(View.GONE);
 
-                    Toast.makeText(RecordingActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
                 } else
                     requestPermission();
             }
@@ -163,7 +162,7 @@ public class RecordingActivity extends AppCompatActivity {
                 });
 
                 mediaPlayer.start();
-                Toast.makeText(RecordingActivity.this, "Playing...", Toast.LENGTH_SHORT).show();
+
             }
         });
 

@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +22,10 @@ import com.lambton.note_elite_android.database.AudioDao;
 import com.lambton.note_elite_android.model.AudioFile;
 import com.lambton.note_elite_android.utils.ViewUtils;
 
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,6 +39,8 @@ public class RecordingListActivity extends AppCompatActivity {
     List<AudioFile> audioFileList;
     RecordingListAdapter recordingListAdapter;
     public static int noteId;
+    public static final int AUDIO_REQUEST_CODE = 12432;
+    AudioFile audioFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,7 @@ public class RecordingListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.recording_list_menu, menu);
         ViewUtils.tintMenu(menu, R.id.btn_speak_now, R.color.tintColorByAman);
+        ViewUtils.tintMenu(menu, R.id.btn_select_audio_files, R.color.tintColorByAman);
 
         return true;
     }
@@ -84,7 +92,48 @@ public class RecordingListActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
 
+        }if(id == R.id.btn_select_audio_files){
+            Intent intent_upload = new Intent();
+            intent_upload.setType("audio/*");
+            intent_upload.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent_upload,AUDIO_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+
+        if(requestCode == AUDIO_REQUEST_CODE){
+
+            if(resultCode == RESULT_OK){
+
+                //the selected audio.
+                Uri uri = data.getData();
+                uri.getPath();
+
+               Uri value = Uri.parse(Environment.getExternalStorageDirectory()+uri.getPath());
+                Toast.makeText(this, value.toString()+", "+ value.getPath(), Toast.LENGTH_SHORT).show();
+                bind(value.toString());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void bind(String pathSave) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String date = simpleDateFormat.format(cal.getTime());
+
+        audioFile = new AudioFile();
+
+        audioFile.setFileName(date);
+        audioFile.setDate(date);
+        audioFile.setNoteId(noteId);
+        audioFile.setFilePath(pathSave);
+
+        audioFile.save();
+
+        loadRecordingList();
     }
 }

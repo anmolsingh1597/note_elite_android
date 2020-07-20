@@ -7,5 +7,11 @@
         android:iconTint="@color/tintColorByAman"
         android:title="Add"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/btn_select_audio_files"
+        android:icon="@android:drawable/ic_media_play"
+        android:iconTint="@color/tintColorByAman"
+        android:title="Add"
+        app:showAsAction="always" />
 
 </menu>
