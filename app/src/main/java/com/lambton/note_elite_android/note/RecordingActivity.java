@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -27,6 +28,7 @@ import com.lambton.note_elite_android.R;
 import com.lambton.note_elite_android.database.AudioDao;
 import com.lambton.note_elite_android.model.AudioFile;
 import com.lambton.note_elite_android.model.Note;
+import com.raizlabs.android.dbflow.sql.language.Operator;
 
 import java.io.File;
 import java.io.IOException;
@@ -204,6 +206,7 @@ public class RecordingActivity extends AppCompatActivity {
                         }
                         bind(fileName);
                         alertDialog.dismiss();
+                        startActivity(new Intent(RecordingActivity.this,RecordingListActivity.class));
                         finish();
                     }
                 });
@@ -395,7 +398,7 @@ public class RecordingActivity extends AppCompatActivity implements View.OnClick
 
 
     private void startRecording() {
-        //we use the MediaRecorder class to record
+        //we use the MediaRecorder class to recordingbtn
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);

@@ -81,6 +81,7 @@ public class RecordingListActivity extends AppCompatActivity {
             RecordingActivity.noteId = noteId;
             Intent intent = new Intent(RecordingListActivity.this,RecordingActivity.class);
             startActivity(intent);
+            finish();
 
         }
         return super.onOptionsItemSelected(item);
