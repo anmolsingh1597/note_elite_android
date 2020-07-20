@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,7 @@ import com.lambton.note_elite_android.database.AudioDao;
 import com.lambton.note_elite_android.model.AudioFile;
 import com.lambton.note_elite_android.utils.ViewUtils;
 
+import java.io.File;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,11 +112,10 @@ public class RecordingListActivity extends AppCompatActivity {
 
                 //the selected audio.
                 Uri uri = data.getData();
-                uri.getPath();
 
-               Uri value = Uri.parse(Environment.getExternalStorageDirectory()+uri.getPath());
-                Toast.makeText(this, value.toString()+", "+ value.getPath(), Toast.LENGTH_SHORT).show();
-                bind(value.toString());
+                String fullPath = Environment.getExternalStorageDirectory() + uri.getPath().replace(":14","")+".3gp";
+                Toast.makeText(this,  fullPath+", "+ uri.getPath(), Toast.LENGTH_SHORT).show();
+                bind(fullPath);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
