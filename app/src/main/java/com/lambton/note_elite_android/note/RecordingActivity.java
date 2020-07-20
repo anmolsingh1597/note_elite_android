@@ -268,6 +268,13 @@ public class RecordingActivity extends AppCompatActivity {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        startActivity(new Intent(RecordingActivity.this,RecordingListActivity.class));
+        finish();
+    }
 }
 
 
