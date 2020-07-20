@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/metallic"
     tools:context=".note.RecordingActivity">
 
     <TextView
@@ -15,7 +14,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
-        android:textColor="@color/design_default_color_secondary_variant"
+        android:textColor="@color/tintColorByAman"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -24,6 +23,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/tintColorByAnmol"
         android:background="@drawable/btn_rounded_red"
         android:drawableStart="@drawable/recordingbtn"
         android:text="Start Recording"/>
@@ -33,6 +33,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/tintColorByAnmol"
         android:drawableStart="@drawable/stopbtn"
         android:text="Stop Recording"
         android:background="@drawable/btn_rounded_red" />
@@ -42,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
+        android:textColor="@color/tintColorByAnmol"
         android:background="@drawable/btn_rounded_green"
         android:drawableStart="@drawable/videobtn"
         android:text="Play"/>
@@ -51,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
+        android:textColor="@color/tintColorByAnmol"
         android:background="@drawable/btn_rounded_green"
         android:drawableStart="@drawable/stoprecord"
         android:text="Stop"/>
@@ -60,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
+        android:textColor="@color/tintColorByAnmol"
         android:background="@drawable/btn_rounded_blue"
         android:drawableStart="@drawable/saverecord"
         android:text="Save"/>

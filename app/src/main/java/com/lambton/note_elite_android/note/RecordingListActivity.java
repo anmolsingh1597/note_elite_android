@@ -45,7 +45,7 @@ public class RecordingListActivity extends AppCompatActivity {
     private void initials() {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.md_blue_grey_400));
+        mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.tintColorByAman));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +70,7 @@ public class RecordingListActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.recording_list_menu, menu);
+        ViewUtils.tintMenu(menu, R.id.btn_speak_now, R.color.tintColorByAman);
 
         return true;
     }

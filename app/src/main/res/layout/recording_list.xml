@@ -44,7 +44,7 @@
             android:layout_margin="5dp"
             android:background="@drawable/btn_rounded_red"
             android:text="Play"
-            android:textColor="@color/md_yellow_700" />
+            android:textColor="#F44336" />
 
     </LinearLayout>
 

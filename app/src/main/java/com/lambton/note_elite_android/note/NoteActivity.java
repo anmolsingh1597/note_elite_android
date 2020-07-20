@@ -124,7 +124,7 @@ public class NoteActivity extends AppCompatActivity{
 		NoteActivityIntentBuilder.inject(getIntent(), this);
 		ButterKnife.bind(this);
 		setSupportActionBar(mToolbar);
-		mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.md_blue_grey_400));
+		mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.tintColorByAman));
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener(){
 			@Override public void onClick(View v){
 				onBackPressed();

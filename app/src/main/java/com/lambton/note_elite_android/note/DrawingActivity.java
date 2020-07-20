@@ -57,7 +57,7 @@ public class DrawingActivity extends AppCompatActivity {
 		DrawingActivityIntentBuilder.inject(getIntent(), this);
 		ButterKnife.bind(this);
 		setSupportActionBar(mToolbar);
-		mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.md_blue_grey_400));
+		mToolbar.setNavigationIcon(ViewUtils.tintDrawable(R.drawable.ic_arrow_back_white_24dp, R.color.tintColorByAman));
 		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -103,6 +103,9 @@ public class DrawingActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.drawing_menu, menu);
+
+		ViewUtils.tintMenu(menu,R.id.btn_camera_menu,R.color.tintColorByAman);
+		ViewUtils.tintMenu(menu,R.id.btn_file_menu,R.color.tintColorByAman);
 		return true;
 	}
 
