@@ -2,9 +2,9 @@
 
 	<!-- Base application theme. -->
 	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-		<item name="colorPrimary">@color/md_teal_800</item>
-		<item name="colorPrimaryDark">@color/md_teal_900</item>
-		<item name="colorAccent">@color/md_teal_400</item>
+		<item name="colorPrimary">@color/tintColorByAman</item>
+		<item name="colorPrimaryDark">@color/tintColorByAman</item>
+		<item name="colorAccent">@color/tintColorByAnmol</item>
 		<item name="android:windowBackground">@color/activityBackground</item>
 		<item name="windowActionModeOverlay">true</item>
 	</style>

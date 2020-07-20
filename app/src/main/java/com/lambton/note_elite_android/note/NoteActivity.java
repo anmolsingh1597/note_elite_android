@@ -187,8 +187,9 @@ public class NoteActivity extends AppCompatActivity{
 
 	@Override public boolean onCreateOptionsMenu(Menu menu){
 		getMenuInflater().inflate(R.menu.note_menu, menu);
-		ViewUtils.tintMenu(menu, R.id.delete_note, R.color.md_blue_grey_400);
-		ViewUtils.tintMenu(menu, R.id.attachments, R.color.md_blue_grey_400);
+		ViewUtils.tintMenu(menu, R.id.delete_note, R.color.tintColorByAman);
+		ViewUtils.tintMenu(menu, R.id.attachments, R.color.tintColorByAman);
+		ViewUtils.tintMenu(menu,R.id.recordingMenuIcon,R.color.tintColorByAman);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -201,13 +202,15 @@ public class NoteActivity extends AppCompatActivity{
 
 		if (item.getItemId() == R.id.attachments){
 
-			LayoutInflater inflater = this.getLayoutInflater();
-			final View layout = inflater.inflate(R.layout.attachment_dialog, null);
-			attachmentDialog = new MaterialDialog.Builder(this)
-					.autoDismiss(false)
-					.customView(layout, false)
-					.build();
-			attachmentDialog.show();
+//			LayoutInflater inflater = this.getLayoutInflater();
+//			final View layout = inflater.inflate(R.layout.attachment_dialog, null);
+//			attachmentDialog = new MaterialDialog.Builder(this)
+//					.autoDismiss(false)
+//					.customView(layout, false)
+//					.build();
+//			attachmentDialog.show();
+
+			displayLocationDialog();
 
 
 //			// Camera
@@ -215,21 +218,30 @@ public class NoteActivity extends AppCompatActivity{
 //			cameraSelection.setOnClickListener(new AttachmentOnClickListener());
 
 			// Audio recording
-			android.widget.TextView recordingSelection = layout.findViewById(R.id.recordings);
-			recordingSelection.setOnClickListener(new AttachmentOnClickListener());
+//			android.widget.TextView recordingSelection = layout.findViewById(R.id.recordings);
+//			recordingSelection.setOnClickListener(new AttachmentOnClickListener());
+//
+////			// Video recording
+////			android.widget.TextView videoSelection = layout.findViewById(R.id.video);
+////			videoSelection.setOnClickListener(new AttachmentOnClickListener());
+//
+////			// Files
+////			android.widget.TextView filesSelection = layout.findViewById(R.id.files);
+////			filesSelection.setOnClickListener(new AttachmentOnClickListener());
+//
+//			// LocationDataFile
+//			android.widget.TextView locationSelection = layout.findViewById(R.id.location);
+//			locationSelection.setOnClickListener(new AttachmentOnClickListener());
 
-//			// Video recording
-//			android.widget.TextView videoSelection = layout.findViewById(R.id.video);
-//			videoSelection.setOnClickListener(new AttachmentOnClickListener());
 
-//			// Files
-//			android.widget.TextView filesSelection = layout.findViewById(R.id.files);
-//			filesSelection.setOnClickListener(new AttachmentOnClickListener());
+		}
 
-			// LocationDataFile
-			android.widget.TextView locationSelection = layout.findViewById(R.id.location);
-			locationSelection.setOnClickListener(new AttachmentOnClickListener());
+		if(item.getItemId() == R.id.recordingMenuIcon){
 
+			RecordingActivity.noteId = note.getId();
+			RecordingListActivity.noteId = note.getId();
+			Intent intent = new Intent(NoteActivity.this,RecordingListActivity.class);
+			startActivity(intent);
 
 		}
 		return super.onOptionsItemSelected(item);

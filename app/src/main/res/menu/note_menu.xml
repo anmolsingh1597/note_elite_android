@@ -3,8 +3,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
 		android:id="@+id/attachments"
-		android:icon="@drawable/ic_add_white_24dp"
-		android:title="Item"
+		android:icon="@android:drawable/ic_dialog_map"
+		android:title="Location"
+		app:showAsAction="always" />
+	<item
+		android:id="@+id/recordingMenuIcon"
+		android:icon="@android:drawable/ic_media_play"
+		android:title="Recordings"
 		app:showAsAction="always" />
 	<item
 			android:id="@+id/delete_note"

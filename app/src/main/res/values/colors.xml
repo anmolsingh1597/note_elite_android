@@ -50,5 +50,8 @@
 	<color name="card_undobar_material_text_color">#4CAF50</color>
 	<color name="card_undobar_material_background_color">#323232</color>
 
+	<color name="tintColorByAman">#ba5370</color>
+	<color name="tintColorByAnmol">#f4d2e8</color>
+
 
 </resources>
