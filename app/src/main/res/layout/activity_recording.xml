@@ -8,7 +8,7 @@
     tools:context=".note.RecordingActivity">
 
     <TextView
-        android:text="Record Audio"
+        android:text="Give your voice a path"
         android:textSize="30sp"
         android:layout_gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"

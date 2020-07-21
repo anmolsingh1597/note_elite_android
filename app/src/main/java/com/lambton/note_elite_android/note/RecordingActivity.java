@@ -77,6 +77,13 @@ public class RecordingActivity extends AppCompatActivity {
         btnStopRecord = findViewById(R.id.btn_stop_record);
         btnSave = findViewById(R.id.btn_save);
 
+        btnRecord.setVisibility(View.VISIBLE);
+        btnStop.setVisibility(View.GONE);
+        btnPlay.setVisibility(View.GONE);
+        btnStopRecord.setVisibility(View.GONE);
+        btnSave.setVisibility(View.GONE);
+
+
 
         // check the permission
         if (!checkPermissionDevice())
@@ -113,10 +120,16 @@ public class RecordingActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+
+
                     btnPlay.setEnabled(false);
                     btnStop.setEnabled(false);
                     btnStopRecord.setEnabled(true);
                     btnRecord.setVisibility(View.GONE);
+                    btnStop.setVisibility(View.GONE);
+                    btnPlay.setVisibility(View.GONE);
+                    btnStopRecord.setVisibility(View.VISIBLE);
+                    btnSave.setVisibility(View.GONE);
 
                 } else
                     requestPermission();
@@ -132,6 +145,10 @@ public class RecordingActivity extends AppCompatActivity {
                 btnStop.setEnabled(true);
                 btnRecord.setEnabled(true);
                 btnRecord.setVisibility(View.VISIBLE);
+                btnStop.setVisibility(View.GONE);
+                btnPlay.setVisibility(View.VISIBLE);
+                btnStopRecord.setVisibility(View.GONE);
+                btnSave.setVisibility(View.VISIBLE);
             }
         });
 
@@ -143,6 +160,11 @@ public class RecordingActivity extends AppCompatActivity {
                 btnRecord.setEnabled(false);
                 btnPlay.setVisibility(View.GONE);
                 btnStop.setVisibility(View.VISIBLE);
+
+                btnRecord.setVisibility(View.GONE);
+                btnPlay.setVisibility(View.GONE);
+                btnStopRecord.setVisibility(View.GONE);
+                btnSave.setVisibility(View.VISIBLE);
 
                 mediaPlayer = new MediaPlayer();
                 try {
@@ -174,6 +196,11 @@ public class RecordingActivity extends AppCompatActivity {
                 btnStop.setEnabled(false);
                 btnRecord.setEnabled(true);
                 btnPlay.setVisibility(View.VISIBLE);
+
+                btnRecord.setVisibility(View.VISIBLE);
+                btnStop.setVisibility(View.GONE);
+                btnStopRecord.setVisibility(View.GONE);
+                btnSave.setVisibility(View.VISIBLE);
 
                 if (mediaPlayer != null) {
                     mediaPlayer.stop();
